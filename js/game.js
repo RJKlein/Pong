@@ -67,6 +67,10 @@ var mainState = function(game) {
     this.ballVelocity;
 }
 
+Game.addNewPlayer = function(id,x,y){
+    console.log("test received");
+};
+
 mainState.prototype = {
     preload: function () {
         game.load.image('ball', 'assets/ball.png');
@@ -83,6 +87,7 @@ mainState.prototype = {
         this.initKeyboard();
         this.initSounds();
         this.startDemo();
+        Client.askNewPlayer();
     },
     
     update: function () {
