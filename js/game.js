@@ -159,6 +159,10 @@ mainState.prototype = {
         
         this.paddleRight_up = game.input.keyboard.addKey(Phaser.Keyboard.UP);
         this.paddleRight_down = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+        
+        this.testKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        this.testKey.onDown.add(Client.sendTest, this);
+    
     },
     
     initSounds: function () {
