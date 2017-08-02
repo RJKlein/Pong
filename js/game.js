@@ -67,6 +67,8 @@ var mainState = function(game) {
     this.ballVelocity;
 }
 
+var Game = {};
+
 Game.addNewPlayer = function(id,x,y){
     console.log("test received");
 };
