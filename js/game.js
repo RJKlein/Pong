@@ -74,11 +74,11 @@ Game.addNewPlayer = function(id,master,y){
     Game.master = master;
     Game.id = id;
     if (Game.master != Game.id){
-        mainState.startGame();
+        playState.startGame();
     }; 
 };
 
-mainState.prototype = {
+var playState = {
     preload: function () {
         game.load.image('ball', 'assets/ball.png');
         game.load.image('paddle', 'assets/paddle.png');
@@ -352,5 +352,5 @@ mainState.prototype = {
 };
 
 var game = new Phaser.Game(gameProperties.screenWidth, gameProperties.screenHeight, Phaser.AUTO, 'gameDiv');
-game.state.add('main', mainState);
+game.state.add('main', playState);
 game.state.start('main');
