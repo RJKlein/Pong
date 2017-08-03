@@ -12,6 +12,7 @@ app.get('/',function(req,res){
 });
 
 server.lastPlayderID = 0;
+server.master = 999;
 
 server.listen(process.env.PORT || 8081,function(){
     console.log('Listening on '+server.address().port);
@@ -20,9 +21,10 @@ server.listen(process.env.PORT || 8081,function(){
 io.on('connection',function(socket){
 
     socket.on('newplayer',function(){
+        if (server.master = 999) server.master = lastPlayderID;
         socket.player = {
             id: server.lastPlayderID++,
-            x: randomInt(100,400),
+            x: server.master,
             y: randomInt(100,400)
         };
         socket.emit('allplayers',getAllPlayers());
@@ -36,6 +38,7 @@ io.on('connection',function(socket){
         });
 
         socket.on('disconnect',function(){
+            if (server.master = socket.player.id) server.master = 999;
             io.emit('remove',socket.player.id);
         });
     });

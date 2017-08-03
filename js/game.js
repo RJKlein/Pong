@@ -69,8 +69,10 @@ var mainState = function(game) {
 
 var Game = {};
 
-Game.addNewPlayer = function(id,x,y){
-    console.log("test received", id);
+Game.addNewPlayer = function(id,master,y){
+    console.log("test received", id, master);
+    Game.master = master;
+    Game.id = id;
 };
 
 mainState.prototype = {
