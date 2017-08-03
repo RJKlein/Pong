@@ -73,7 +73,7 @@ Game.addNewPlayer = function(id,master,y){
     console.log("test received", id, master);
     Game.master = master;
     Game.id = id;
-    if(Game.master<>Game.id){
+    if!(Game.master=Game.id){
         mainState.startGame();
     }; 
 };
