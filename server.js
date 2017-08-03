@@ -21,12 +21,9 @@ server.listen(process.env.PORT || 8081,function(){
 io.on('connection',function(socket){
 
     socket.on('newplayer',function(){
-        if (server.master == 999) { 
-            server.master = lastPlayderID;
-        };
         socket.player = {
             id: server.lastPlayderID++,
-            x: server.master,
+            x: setMaster(),
             y: randomInt(100,400)
         };
         socket.emit('allplayers',getAllPlayers());
@@ -60,4 +57,9 @@ function getAllPlayers(){
 
 function randomInt (low, high) {
     return Math.floor(Math.random() * (high - low) + low);
+}
+
+function setMaster () {
+    if (server.master == 999) server.master = lastPlayderID-1;
+    return server.master
 }
