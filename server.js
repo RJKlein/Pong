@@ -21,7 +21,6 @@ server.listen(process.env.PORT || 8081,function(){
 io.on('connection',function(socket){
 
     socket.on('newplayer',function(){
-        if (server.master = 999) server.master = lastPlayderID;
         socket.player = {
             id: server.lastPlayderID++,
             x: server.master,
@@ -38,7 +37,6 @@ io.on('connection',function(socket){
         });
 
         socket.on('disconnect',function(){
-            if (server.master = socket.player.id) server.master = 999;
             io.emit('remove',socket.player.id);
         });
     });
