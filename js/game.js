@@ -74,7 +74,7 @@ Game.addNewPlayer = function(id,master,y){
     Game.master = master;
     Game.id = id;
     if (Game.master != Game.id){
-        game.startGame();
+        main.startGame();
     }; 
 };
 
