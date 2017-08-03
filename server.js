@@ -21,6 +21,9 @@ server.listen(process.env.PORT || 8081,function(){
 io.on('connection',function(socket){
 
     socket.on('newplayer',function(){
+        if (server.master == 999) { 
+            server.master = lastPlayderID;
+        };
         socket.player = {
             id: server.lastPlayderID++,
             x: server.master,
