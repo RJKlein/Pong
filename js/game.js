@@ -73,6 +73,9 @@ Game.addNewPlayer = function(id,master,y){
     console.log("test received", id, master);
     Game.master = master;
     Game.id = id;
+    if(game.master<>Game.id){
+        mainState.startGame();
+    }; 
 };
 
 mainState.prototype = {
@@ -185,13 +188,13 @@ mainState.prototype = {
         this.resetBall();
         this.enablePaddles(false);
         this.enableBoundaries(true);
-        game.input.onDown.add(this.startGame, this);
+        //game.input.onDown.add(this.startGame, this);
         
         this.instructions.visible = true;
     },
     
     startGame: function () {
-        game.input.onDown.remove(this.startGame, this);
+        //game.input.onDown.remove(this.startGame, this);
         
         this.enablePaddles(true);
         this.enableBoundaries(false);
