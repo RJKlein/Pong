@@ -36,6 +36,9 @@ io.on('connection',function(socket){
             io.emit('move',socket.player);
         });
 
+        socket.on('newBall',function(data){
+            io.emit('ballStart',data);
+        });
         socket.on('disconnect',function(){
             io.emit('remove',socket.player.id);
         });

@@ -29,7 +29,7 @@ var fontAssets = {
     
     scoreFontStyle:{font: '80px Arial', fill: '#FFFFFF', align: 'center'},
     instructionsFontStyle:{font: '24px Arial', fill: '#FFFFFF', align: 'center'},
-}
+};
 
 var labels = {
     clickToStart: 'Left paddle: A to move up, Z to move down.\n\nRight paddle: UP and DOWN arrow keys.\n\n- click to start -',
@@ -96,10 +96,7 @@ var playState = {
             this.backgroundGraphics.moveTo(game.world.centerX, y);
             this.backgroundGraphics.lineTo(game.world.centerX, y + gameProperties.dashSize);
         }
-        
-        this.ballSprite = game.add.sprite(game.world.centerX, game.world.centerY, 'ball');
-        this.ballSprite.anchor.set(0.5, 0.5);
-        
+             
         this.tf_scoreLeft = game.add.text(fontAssets.scoreLeft_x, fontAssets.scoreTop_y, "0", fontAssets.scoreFontStyle);
         this.tf_scoreLeft.anchor.set(0.5, 0);
         
@@ -163,19 +160,23 @@ var playState = {
     },
     
     startBall: function () {
-        this.ballVelocity = gameProperties.ballVelocity;
-        this.ballReturnCount = 0;
-        this.ballSprite.visible = true;
+        if (this.master = this.id){
+            this.ballSprite.reset(game.world.centerX, game.rnd.between(0, gameProperties.screenHeight));
+            this.ballVelocity = gameProperties.ballVelocity;
+            this.ballReturnCount = 0;
+            this.ballSprite.visible = true;
         
-        var randomAngle = game.rnd.pick(gameProperties.ballRandomStartingAngleRight.concat(gameProperties.ballRandomStartingAngleLeft));
+            var randomAngle = game.rnd.pick(gameProperties.ballRandomStartingAngleRight.concat(gameProperties.ballRandomStartingAngleLeft));
         
-        if (this.missedSide == 'right') {
-            randomAngle = game.rnd.pick(gameProperties.ballRandomStartingAngleRight);
-        } else if (this.missedSide == 'left') {
-            randomAngle = game.rnd.pick(gameProperties.ballRandomStartingAngleLeft);
+            if (this.missedSide == 'right') {
+                randomAngle = game.rnd.pick(gameProperties.ballRandomStartingAngleRight);
+            } else if (this.missedSide == 'left') {
+                randomAngle = game.rnd.pick(gameProperties.ballRandomStartingAngleLeft);
+            }
+        
+            game.physics.arcade.velocityFromAngle(randomAngle, gameProperties.ballVelocity, this.ballSprite.body.velocity);
+            client.sendNewBall(x, y, randomAngle, gameProperties.ballVelocity);
         }
-        
-        game.physics.arcade.velocityFromAngle(randomAngle, gameProperties.ballVelocity, this.ballSprite.body.velocity);
     },
     
     resetBall: function () {
@@ -186,8 +187,7 @@ var playState = {
     
     enablePaddles: function (enabled) {
         this.paddleGroup.setAll('visible', enabled);
-        this.paddleGroup.setAll('body.enable', enabled);
-            
+        this.paddleGroup.setAll('body.enable', enabled);            
     },
     
     enableBoundaries: function (enabled) {
@@ -212,7 +212,6 @@ var playState = {
     },
 
     movePlayer: function(id,x,y){
-        console.log("move received", id, x, y);
         this.paddle[id].position.y = y;
     },
     
@@ -221,6 +220,13 @@ var playState = {
         {
             Client.sendClick(gameProperties.paddleRight_x, game.input.y);
         }
+    },
+
+    ballStart: function(x,y,angle,velocity) {
+        this.ballSprite = game.add.sprite(x, y, 'ball');
+        this.ballSprite.anchor.set(0.5, 0.5); 
+        console.log("ball received", x, y, angle, velocity);
+        } 
     },
     
     collideWithPaddle: function (ball, paddle) {
