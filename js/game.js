@@ -97,6 +97,9 @@ var playState = {
             this.backgroundGraphics.lineTo(game.world.centerX, y + gameProperties.dashSize);
         }
              
+        this.ballSprite = game.add.sprite(game.world.centerX, game.world.centerY, 'ball');
+        this.ballSprite.anchor.set(0.5, 0.5);
+
         this.tf_scoreLeft = game.add.text(fontAssets.scoreLeft_x, fontAssets.scoreTop_y, "0", fontAssets.scoreFontStyle);
         this.tf_scoreLeft.anchor.set(0.5, 0);
         
@@ -223,8 +226,6 @@ var playState = {
     },
 
     ballStart: function(x,y,angle,velocity) {
-        this.ballSprite = game.add.sprite(x, y, 'ball');
-        this.ballSprite.anchor.set(0.5, 0.5); 
         console.log("ball received", x, y, angle, velocity); 
     },
     
