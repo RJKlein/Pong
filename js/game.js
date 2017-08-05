@@ -80,7 +80,7 @@ Game.movePlayer = function(id,x,y){
     //var duration = distance*10;
     //tween.to({x:x,y:y}, duration);
     //tween.start();
-    Sthis.paddleRightSprite.position.y = y;
+    this.paddleRightSprite.position.y = y;
 };
 
 var playState = {
@@ -229,7 +229,7 @@ var playState = {
     },
     
     getInput: function () {
-        if (game.input.isDown)
+        if (game.input.pointer1.isDown)
         {
             this.paddleLeftSprite.position.y = game.input.y;
             Client.sendClick(paddleLeft_x,game.input.y);
