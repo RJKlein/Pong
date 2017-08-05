@@ -81,10 +81,12 @@ var playState = {
     
     update: function () {
         this.getInput();
-        game.physics.arcade.overlap(this.ballSprite, this.paddleGroup, this.collideWithPaddle, null, this);
+        if (this.master = this.id) {
+            game.physics.arcade.overlap(this.ballSprite, this.paddleGroup, this.collideWithPaddle, null, this);
         
-        if (this.ballSprite.body.blocked.up || this.ballSprite.body.blocked.down || this.ballSprite.body.blocked.left || this.ballSprite.body.blocked.right) {
-            this.sndBallBounce.play();
+            if (this.ballSprite.body.blocked.up || this.ballSprite.body.blocked.down || this.ballSprite.body.blocked.left || this.ballSprite.body.blocked.right) {
+                this.sndBallBounce.play();
+            }
         }
     },
     
