@@ -232,7 +232,7 @@ var playState = {
         if (game.input.pointer1.isDown)
         {
             this.paddleLeftSprite.position.y = game.input.y;
-            Client.sendClick(paddleLeft_x,game.input.y);
+            Client.sendClick(gameProperties.paddleLeft_x, game.input.y);
         }
     },
     
