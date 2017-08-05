@@ -196,7 +196,7 @@ var playState = {
     },
     
     addNewPlayer: function(id,master,y){
-        if (Math.isEven(id)){
+        if (id&1){
             this.paddle[id] = game.add.sprite(gameProperties.paddleLeft_x, y, 'paddle');
         } else {
             this.paddle[id] = game.add.sprite(gameProperties.paddleRight_x, y, 'paddle');
