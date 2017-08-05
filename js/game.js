@@ -42,12 +42,7 @@ var mainState = function(game) {
     this.paddleLeftSprite;
     this.paddleRightSprite;
     this.paddleGroup;
-    
-    this.paddleLeft_up;
-    this.paddleLeft_down;
-    this.paddleRight_up;
-    this.paddleRight_down;
-    
+      
     this.missedSide;
     
     this.scoreLeft;
@@ -75,7 +70,17 @@ Game.addNewPlayer = function(id,master,y){
     Game.id = id;
     if (Game.master != Game.id){
         playState.startGame();
-    }; 
+    } 
+};
+
+Game.movePlayer = function(id,x,y){
+    //var player = Game.playerMap[id];
+    //var distance = Phaser.Math.distance(player.x,player.y,x,y);
+    //var tween = game.add.tween(player);
+    //var duration = distance*10;
+    //tween.to({x:x,y:y}, duration);
+    //tween.start();
+    Sthis.paddleRightSprite.position.y = y;
 };
 
 var playState = {
@@ -83,23 +88,21 @@ var playState = {
         game.load.image('ball', 'assets/ball.png');
         game.load.image('paddle', 'assets/paddle.png');
 
-        game.load.audio('ballBounce', ['assets/ballBounce.m4a', 'assets/ballBounce.ogg']);
-        game.load.audio('ballHit', ['assets/ballHit.m4a', 'assets/ballHit.ogg']);
-        game.load.audio('ballMissed', ['assets/ballMissed.m4a', 'assets/ballMissed.ogg']);
+        game.load.audio('ballBounce', ['assets/blaster.mp3', 'assets/ballBounce.ogg']);
+        game.load.audio('ballHit', ['assets/blaster.mp3', 'assets/ballHit.ogg']);
+        game.load.audio('ballMissed', ['assets/blaster.mp3', 'assets/ballMissed.ogg']);
     },
     
     create: function () {
         this.initGraphics();
         this.initPhysics();
-        this.initKeyboard();
         this.initSounds();
         this.startDemo();
         Client.askNewPlayer();
     },
     
     update: function () {
-        this.moveLeftPaddle();
-        this.moveRightPaddle();
+        this.getInput();
         game.physics.arcade.overlap(this.ballSprite, this.paddleGroup, this.collideWithPaddle, null, this);
         
         if (this.ballSprite.body.blocked.up || this.ballSprite.body.blocked.down || this.ballSprite.body.blocked.left || this.ballSprite.body.blocked.right) {
@@ -165,18 +168,6 @@ var playState = {
         this.paddleGroup.setAll('body.immovable', true);
     },
     
-    initKeyboard: function () {
-        this.paddleLeft_up = game.input.keyboard.addKey(Phaser.Keyboard.A);
-        this.paddleLeft_down = game.input.keyboard.addKey(Phaser.Keyboard.Z);
-        
-        this.paddleRight_up = game.input.keyboard.addKey(Phaser.Keyboard.UP);
-        this.paddleRight_down = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
-        
-        this.testKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-        this.testKey.onDown.add(Client.sendTest, this);
-    
-    },
-    
     initSounds: function () {
         this.sndBallHit = game.add.audio('ballHit');
         this.sndBallBounce = game.add.audio('ballBounce');
@@ -187,15 +178,14 @@ var playState = {
         this.ballSprite.visible = false;
         this.resetBall();
         this.enablePaddles(false);
-        this.enableBoundaries(true);
+        this.enableBoundaries(true);       
         //game.input.onDown.add(this.startGame, this);
         
         this.instructions.visible = true;
     },
     
     startGame: function () {
-        //game.input.onDown.remove(this.startGame, this);
-        
+        game.input.onDown.remove(this.startGame, this);
         this.enablePaddles(true);
         this.enableBoundaries(false);
         this.resetBall();
@@ -228,12 +218,7 @@ var playState = {
     enablePaddles: function (enabled) {
         this.paddleGroup.setAll('visible', enabled);
         this.paddleGroup.setAll('body.enable', enabled);
-        
-        this.paddleLeft_up.enabled = enabled;
-        this.paddleLeft_down.enabled = enabled;
-        this.paddleRight_up.enabled = enabled;
-        this.paddleRight_down.enabled = enabled;
-        
+            
         this.paddleLeftSprite.y = game.world.centerY;
         this.paddleRightSprite.y = game.world.centerY;
     },
@@ -243,37 +228,11 @@ var playState = {
         game.physics.arcade.checkCollision.right = enabled;
     },
     
-    moveLeftPaddle: function () {
-        if (this.paddleLeft_up.isDown)
+    getInput: function () {
+        if (game.input.isDown)
         {
-            this.paddleLeftSprite.body.velocity.y = -gameProperties.paddleVelocity;
-        }
-        else if (this.paddleLeft_down.isDown)
-        {
-            this.paddleLeftSprite.body.velocity.y = gameProperties.paddleVelocity;
-        } else {
-            this.paddleLeftSprite.body.velocity.y = 0;
-        }
-        
-        if (this.paddleLeftSprite.body.y < gameProperties.paddleTopGap) {
-            this.paddleLeftSprite.body.y = gameProperties.paddleTopGap;
-        }
-    },
-    
-    moveRightPaddle: function () {
-        if (this.paddleRight_up.isDown)
-        {
-            this.paddleRightSprite.body.velocity.y = -gameProperties.paddleVelocity;
-        }
-        else if (this.paddleRight_down.isDown)
-        {
-            this.paddleRightSprite.body.velocity.y = gameProperties.paddleVelocity;
-        } else {
-            this.paddleRightSprite.body.velocity.y = 0;
-        }
-        
-        if (this.paddleRightSprite.body.y < gameProperties.paddleTopGap) {
-            this.paddleRightSprite.body.y = gameProperties.paddleTopGap;
+            this.paddleLeftSprite.position.y = game.input.y;
+            Client.sendClick(paddleLeft_x,game.input.y);
         }
     },
     
