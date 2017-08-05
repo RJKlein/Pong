@@ -39,8 +39,6 @@ var labels = {
 var mainState = function(game) {
     this.backgroundGraphics;
     this.ballSprite;
-    this.paddleLeftSprite;
-    this.paddleRightSprite;
     this.paddleGroup;
       
     this.missedSide;
@@ -102,12 +100,6 @@ var playState = {
         this.ballSprite = game.add.sprite(game.world.centerX, game.world.centerY, 'ball');
         this.ballSprite.anchor.set(0.5, 0.5);
         
-        //this.paddleLeftSprite = game.add.sprite(gameProperties.paddleLeft_x, game.world.centerY, 'paddle');
-        //this.paddleLeftSprite.anchor.set(0.5, 0.5);
-        
-        this.paddleRightSprite = game.add.sprite(gameProperties.paddleRight_x, game.world.centerY, 'paddle');
-        this.paddleRightSprite.anchor.set(0.5, 0.5);
-        
         this.tf_scoreLeft = game.add.text(fontAssets.scoreLeft_x, fontAssets.scoreTop_y, "0", fontAssets.scoreFontStyle);
         this.tf_scoreLeft.anchor.set(0.5, 0);
         
@@ -139,9 +131,6 @@ var playState = {
         this.paddleGroup = game.add.group();
         this.paddleGroup.enableBody = true;
         this.paddleGroup.physicsBodyType = Phaser.Physics.ARCADE;
-        
-        //this.paddleGroup.add(this.paddleLeftSprite);
-        //this.paddleGroup.add(this.paddleRightSprite);
         
         this.paddleGroup.setAll('checkWorldBounds', true);
         this.paddleGroup.setAll('body.collideWorldBounds', true);
@@ -207,7 +196,11 @@ var playState = {
     },
     
     addNewPlayer: function(id,master,y){
-        this.paddle[id] = game.add.sprite(gameProperties.paddleLeft_x, y, 'paddle');
+        if (Math.floor(id/2)) === 0){
+            this.paddle[id] = game.add.sprite(gameProperties.paddleLeft_x, y, 'paddle');
+        } else {
+            this.paddle[id] = game.add.sprite(gameProperties.paddleRight_x, y, 'paddle');
+        }
         this.paddle[id].anchor.set(0.5, 0.5);
         this.paddleGroup.add(this.paddle[id]);
         console.log("test received", id, master, y);
