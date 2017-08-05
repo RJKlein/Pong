@@ -72,11 +72,11 @@ var playState = {
     
     create: function () {
         this.paddle = {} ;
+        Client.askNewPlayer();
         this.initGraphics();
         this.initPhysics();
         this.initSounds();
         this.startDemo();
-        Client.askNewPlayer();
     },
     
     update: function () {
@@ -120,14 +120,15 @@ var playState = {
     
     initPhysics: function () {
         game.physics.startSystem(Phaser.Physics.ARCADE);
-        game.physics.enable(this.ballSprite, Phaser.Physics.ARCADE);
+        if (this.master = this.id) {
+            game.physics.enable(this.ballSprite, Phaser.Physics.ARCADE);
         
-        this.ballSprite.checkWorldBounds = true;
-        this.ballSprite.body.collideWorldBounds = true;
-        this.ballSprite.body.immovable = true;
-        this.ballSprite.body.bounce.set(1);
-        this.ballSprite.events.onOutOfBounds.add(this.ballOutOfBounds, this);
-        
+            this.ballSprite.checkWorldBounds = true;
+            this.ballSprite.body.collideWorldBounds = true;
+            this.ballSprite.body.immovable = true;
+            this.ballSprite.body.bounce.set(1);
+            this.ballSprite.events.onOutOfBounds.add(this.ballOutOfBounds, this);
+        };
         this.paddleGroup = game.add.group();
         this.paddleGroup.enableBody = true;
         this.paddleGroup.physicsBodyType = Phaser.Physics.ARCADE;
@@ -146,7 +147,6 @@ var playState = {
     startDemo: function () {
         this.ballSprite.visible = false;
         this.resetBall();
-        this.enablePaddles(false);
         this.enableBoundaries(true);       
         //game.input.onDown.add(this.startGame, this);
         
