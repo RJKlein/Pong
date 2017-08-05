@@ -225,8 +225,7 @@ var playState = {
     ballStart: function(x,y,angle,velocity) {
         this.ballSprite = game.add.sprite(x, y, 'ball');
         this.ballSprite.anchor.set(0.5, 0.5); 
-        console.log("ball received", x, y, angle, velocity);
-        } 
+        console.log("ball received", x, y, angle, velocity); 
     },
     
     collideWithPaddle: function (ball, paddle) {
