@@ -65,7 +65,7 @@ var mainState = function(game) {
 var Game = {};
 
 Game.addNewPlayer = function(id,master,y){
-    console.log("test received", id, master);
+    console.log("test received", id, master, y);
     Game.master = master;
     Game.id = id;
     if (Game.master != Game.id){
@@ -80,7 +80,8 @@ Game.movePlayer = function(id,x,y){
     //var duration = distance*10;
     //tween.to({x:x,y:y}, duration);
     //tween.start();
-    this.paddleRightSprite.position.y = y;
+    console.log("move received", id, x, y);
+    playState.paddleRightSprite.position.y = y;
 };
 
 var playState = {
@@ -232,7 +233,7 @@ var playState = {
         if (game.input.pointer1.isDown)
         {
             this.paddleLeftSprite.position.y = game.input.y;
-            Client.sendClick(gameProperties.paddleLeft_x, game.input.y);
+            Client.sendClick(gameProperties.paddleRight_x, game.input.y);
         }
     },
     
