@@ -62,28 +62,6 @@ var mainState = function(game) {
     this.ballVelocity;
 }
 
-var Game = {};
-
-Game.addNewPlayer = function(id,master,y){
-    console.log("test received", id, master, y);
-    Game.master = master;
-    Game.id = id;
-    if (Game.master != Game.id){
-        playState.startGame();
-    } 
-};
-
-Game.movePlayer = function(id,x,y){
-    //var player = Game.playerMap[id];
-    //var distance = Phaser.Math.distance(player.x,player.y,x,y);
-    //var tween = game.add.tween(player);
-    //var duration = distance*10;
-    //tween.to({x:x,y:y}, duration);
-    //tween.start();
-    console.log("move received", id, x, y);
-    playState.paddleRightSprite.position.y = y;
-};
-
 var playState = {
     preload: function () {
         game.load.image('ball', 'assets/ball.png');
@@ -95,6 +73,7 @@ var playState = {
     },
     
     create: function () {
+        this.paddle = {} ;
         this.initGraphics();
         this.initPhysics();
         this.initSounds();
@@ -123,8 +102,8 @@ var playState = {
         this.ballSprite = game.add.sprite(game.world.centerX, game.world.centerY, 'ball');
         this.ballSprite.anchor.set(0.5, 0.5);
         
-        this.paddleLeftSprite = game.add.sprite(gameProperties.paddleLeft_x, game.world.centerY, 'paddle');
-        this.paddleLeftSprite.anchor.set(0.5, 0.5);
+        //this.paddleLeftSprite = game.add.sprite(gameProperties.paddleLeft_x, game.world.centerY, 'paddle');
+        //this.paddleLeftSprite.anchor.set(0.5, 0.5);
         
         this.paddleRightSprite = game.add.sprite(gameProperties.paddleRight_x, game.world.centerY, 'paddle');
         this.paddleRightSprite.anchor.set(0.5, 0.5);
@@ -161,8 +140,8 @@ var playState = {
         this.paddleGroup.enableBody = true;
         this.paddleGroup.physicsBodyType = Phaser.Physics.ARCADE;
         
-        this.paddleGroup.add(this.paddleLeftSprite);
-        this.paddleGroup.add(this.paddleRightSprite);
+        //this.paddleGroup.add(this.paddleLeftSprite);
+        //this.paddleGroup.add(this.paddleRightSprite);
         
         this.paddleGroup.setAll('checkWorldBounds', true);
         this.paddleGroup.setAll('body.collideWorldBounds', true);
@@ -220,8 +199,6 @@ var playState = {
         this.paddleGroup.setAll('visible', enabled);
         this.paddleGroup.setAll('body.enable', enabled);
             
-        this.paddleLeftSprite.y = game.world.centerY;
-        this.paddleRightSprite.y = game.world.centerY;
     },
     
     enableBoundaries: function (enabled) {
@@ -229,10 +206,26 @@ var playState = {
         game.physics.arcade.checkCollision.right = enabled;
     },
     
+    addNewPlayer: function(id,master,y){
+        this.paddle[id] = game.add.sprite(gameProperties.paddleLeft_x, y, 'paddle');
+        this.paddle[id].anchor.set(0.5, 0.5);
+        this.paddleGroup.add(this.paddle[id]);
+        console.log("test received", id, master, y);
+        this.master = master;
+        this.id = id;
+        if (this.master != this.id){
+            this.startGame();
+        } 
+    },
+
+    movePlayer: function(id,x,y){
+        console.log("move received", id, x, y);
+        this.paddle[id].position.y = y;
+    },
+    
     getInput: function () {
         if (game.input.pointer1.isDown)
         {
-            this.paddleLeftSprite.position.y = game.input.y;
             Client.sendClick(gameProperties.paddleRight_x, game.input.y);
         }
     },
@@ -308,6 +301,11 @@ var playState = {
         this.instructions.visible = false;
         this.winnerLeft.visible = false;
         this.winnerRight.visible = false;
+    },
+    
+    removePlayer: function(id){
+        this.paddle[id].destroy();
+        delete this.paddle[id];
     },
 };
 
