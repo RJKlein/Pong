@@ -216,9 +216,9 @@ var playState = {
         this.master = master;
         this.id = id;
         if (this.master != this.id){
-            this.initBall();
             this.startGame();
         } else {
+            this.initBall();
             this.startDemo();    
         }            
     },
