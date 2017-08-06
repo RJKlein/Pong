@@ -160,7 +160,7 @@ var playState = {
     },
     
     startGame: function () {
-        game.input.onDown.remove(this.startGame, this);
+        //game.input.onDown.remove(this.startGame, this);
         this.enablePaddles(true);
         this.enableBoundaries(false);
         this.resetBall();
