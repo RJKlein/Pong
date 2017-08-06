@@ -91,6 +91,9 @@ var playState = {
     },
     
     initGraphics: function () {
+        this.master = -1;
+        this.id = -2;
+        
         this.backgroundGraphics = game.add.graphics(0, 0);
         this.backgroundGraphics.lineStyle(2, 0xFFFFFF, 1);
         
