@@ -85,6 +85,7 @@ var playState = {
         
             if (this.ballSprite.body.blocked.up || this.ballSprite.body.blocked.down || this.ballSprite.body.blocked.left || this.ballSprite.body.blocked.right) {
                 this.sndBallBounce.play();
+            Client.sendNewBall(this.ballSprite.x, this.ballSprite.x);
             }
         }
     },
@@ -183,7 +184,6 @@ var playState = {
             }
         
             game.physics.arcade.velocityFromAngle(randomAngle, gameProperties.ballVelocity, this.ballSprite.body.velocity);
-            Client.sendNewBall(this.ballSprite.x, this.ballSprite.x, randomAngle, gameProperties.ballVelocity);
         }
     },
     
@@ -233,7 +233,7 @@ var playState = {
     },
 
     ballStart: function(x,y,angle,velocity) {
-        console.log("ball received", x, y, angle, velocity); 
+        console.log("ball received", x, y); 
     },
     
     collideWithPaddle: function (ball, paddle) {
