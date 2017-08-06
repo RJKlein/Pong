@@ -214,7 +214,10 @@ var playState = {
         this.paddleGroup.add(this.paddle[id]);
         console.log("test received", id, master, y);
         this.master = master;
-        this.id = id;
+        if (this.id === -2){
+            // if this.id is not set then next in is my id
+            this.id = id;
+        }
         if (this.master != this.id){
             this.startGame();
         } else {
