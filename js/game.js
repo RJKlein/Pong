@@ -80,7 +80,7 @@ var playState = {
     
     update: function () {
         this.getInput();
-        if (this.master = this.id) {
+        if (this.master === this.id) {
             game.physics.arcade.overlap(this.ballSprite, this.paddleGroup, this.collideWithPaddle, null, this);
         
             if (this.ballSprite.body.blocked.up || this.ballSprite.body.blocked.down || this.ballSprite.body.blocked.left || this.ballSprite.body.blocked.right) {
@@ -169,7 +169,7 @@ var playState = {
     },
     
     startBall: function () {
-        if (this.master = this.id){
+        if (this.master === this.id){
             this.ballSprite.reset(game.world.centerX, game.rnd.between(0, gameProperties.screenHeight));
             this.ballVelocity = gameProperties.ballVelocity;
             this.ballReturnCount = 0;
