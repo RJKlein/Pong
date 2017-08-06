@@ -153,13 +153,13 @@ var playState = {
         this.ballSprite.visible = false;
         this.resetBall();
         this.enableBoundaries(true);       
-        //game.input.onDown.add(this.startGame, this);
+        game.input.onDown.add(this.startGame, this);
         
         this.instructions.visible = true;
     },
     
     startGame: function () {
-        //game.input.onDown.remove(this.startGame, this);
+        game.input.onDown.remove(this.startGame, this);
         this.enablePaddles(true);
         this.enableBoundaries(false);
         this.resetBall();
@@ -212,17 +212,13 @@ var playState = {
         this.paddle[id].anchor.set(0.5, 0.5);
         this.paddleGroup.add(this.paddle[id]);
         console.log("test received", id, master, y);
-        if (id===0 && master===0){
+        if (id === master){
             this.master = true;
             // immediately send x coordinate to clear master flag
             Client.sendClick(gameProperties.paddleRight_x, y);            
-        }
-        if (!this.master){
-            this.startGame();
-        } else {
             this.initBall();
             this.startDemo();    
-        }            
+        }   
     },
 
     movePlayer: function(id,x,y){
