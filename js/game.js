@@ -227,7 +227,7 @@ var playState = {
     },
     
     getInput: function () {
-        if (game.input.pointer1.isDown)
+        if (game.input.activePointer.isDown)
         {
             Client.sendClick(gameProperties.paddleRight_x, game.input.y);
         }
