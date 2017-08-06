@@ -80,7 +80,7 @@ var playState = {
     
     update: function () {
         this.getInput();
-        if (this.master === this.id) {
+        if (this.master) {
             game.physics.arcade.overlap(this.ballSprite, this.paddleGroup, this.collideWithPaddle, null, this);
         
             if (this.ballSprite.body.blocked.up || this.ballSprite.body.blocked.down || this.ballSprite.body.blocked.left || this.ballSprite.body.blocked.right) {
@@ -100,8 +100,7 @@ var playState = {
     },
     
     initGraphics: function () {
-        this.master = -1;
-        this.id = -2;
+        this.master = false;
         
         this.backgroundGraphics = game.add.graphics(0, 0);
         this.backgroundGraphics.lineStyle(2, 0xFFFFFF, 1);
@@ -169,7 +168,7 @@ var playState = {
     },
     
     startBall: function () {
-        if (this.master === this.id){
+        if (this.master){
             this.ballSprite.reset(game.world.centerX, game.rnd.between(0, gameProperties.screenHeight));
             this.ballVelocity = gameProperties.ballVelocity;
             this.ballReturnCount = 0;
@@ -213,12 +212,12 @@ var playState = {
         this.paddle[id].anchor.set(0.5, 0.5);
         this.paddleGroup.add(this.paddle[id]);
         console.log("test received", id, master, y);
-        this.master = master;
-        if (this.id === -2){
-            // if this.id is not set then next in is my id
-            this.id = id;
+        if (id===0) && (master===0){
+            this.master = true;
+            // immediately send x coordinate to clear master flag
+            Client.sendClick(gameProperties.paddleRight_x, y);            
         }
-        if (this.master != this.id){
+        if (!this.master){
             this.startGame();
         } else {
             this.initBall();
