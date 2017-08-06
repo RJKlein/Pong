@@ -212,7 +212,7 @@ var playState = {
         this.paddle[id].anchor.set(0.5, 0.5);
         this.paddleGroup.add(this.paddle[id]);
         console.log("test received", id, master, y);
-        if (id===0) && (master===0){
+        if (id===0 && master===0){
             this.master = true;
             // immediately send x coordinate to clear master flag
             Client.sendClick(gameProperties.paddleRight_x, y);            
