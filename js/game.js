@@ -72,11 +72,10 @@ var playState = {
     
     create: function () {
         this.paddle = {} ;
-        Client.askNewPlayer();
         this.initGraphics();
         this.initPhysics();
         this.initSounds();
-        this.startDemo();
+        Client.askNewPlayer();
     },
     
     update: function () {
@@ -88,6 +87,16 @@ var playState = {
                 this.sndBallBounce.play();
             }
         }
+    },
+    
+    initBall: function() {
+        game.physics.enable(this.ballSprite, Phaser.Physics.ARCADE);
+        
+        this.ballSprite.checkWorldBounds = true;
+        this.ballSprite.body.collideWorldBounds = true;
+        this.ballSprite.body.immovable = true;
+        this.ballSprite.body.bounce.set(1);
+        this.ballSprite.events.onOutOfBounds.add(this.ballOutOfBounds, this);        
     },
     
     initGraphics: function () {
@@ -125,15 +134,7 @@ var playState = {
     
     initPhysics: function () {
         game.physics.startSystem(Phaser.Physics.ARCADE);
-        if (this.master = this.id) {
-            game.physics.enable(this.ballSprite, Phaser.Physics.ARCADE);
-        
-            this.ballSprite.checkWorldBounds = true;
-            this.ballSprite.body.collideWorldBounds = true;
-            this.ballSprite.body.immovable = true;
-            this.ballSprite.body.bounce.set(1);
-            this.ballSprite.events.onOutOfBounds.add(this.ballOutOfBounds, this);
-        };
+
         this.paddleGroup = game.add.group();
         this.paddleGroup.enableBody = true;
         this.paddleGroup.physicsBodyType = Phaser.Physics.ARCADE;
@@ -215,8 +216,11 @@ var playState = {
         this.master = master;
         this.id = id;
         if (this.master != this.id){
+            this.initBall();
             this.startGame();
-        } 
+        } else {
+            this.startDemo();    
+        }            
     },
 
     movePlayer: function(id,x,y){
