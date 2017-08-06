@@ -152,7 +152,7 @@ var playState = {
     },
     
     startDemo: function () {
-        this.ballSprite.visible = false;
+        //this.ballSprite.visible = false;
         this.resetBall();
         this.enableBoundaries(true);       
         game.input.onDown.add(this.startGame, this);
@@ -190,7 +190,7 @@ var playState = {
     
     resetBall: function () {
         this.ballSprite.reset(game.world.centerX, game.rnd.between(0, gameProperties.screenHeight));
-        this.ballSprite.visible = false;
+        //this.ballSprite.visible = false;
         game.time.events.add(Phaser.Timer.SECOND * gameProperties.ballStartDelay, this.startBall, this);
     },
     
@@ -233,7 +233,7 @@ var playState = {
         }
     },
 
-    ballStart: function(x,y,angle,velocity) {
+    ballStart: function(x,y) {
         if(!this.master){
             this.ballSprite.position = (x,y);
         }
