@@ -83,7 +83,7 @@ var playState = {
 
         if (this.master) {
             game.physics.arcade.overlap(this.ballSprite, this.paddleGroup, this.collideWithPaddle, null, this);
-            Client.sendNewBall(this.ballSprite.x, this.ballSprite.x);
+            Client.sendNewBall(this.ballSprite.x, this.ballSprite.y);
             
             if (this.ballSprite.body.blocked.up || this.ballSprite.body.blocked.down || this.ballSprite.body.blocked.left || this.ballSprite.body.blocked.right) {
                 this.sndBallBounce.play();
@@ -235,7 +235,8 @@ var playState = {
 
     ballStart: function(x,y) {
         if(!this.master){
-            this.ballSprite.position = (x,y);
+            this.ballSprite.position.x = x;
+            this.ballSprite.position.y = y;
         }
             console.log("ball received", x, y); 
     },
