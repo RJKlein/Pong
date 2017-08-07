@@ -65,9 +65,9 @@ var playState = {
         game.load.image('ball', 'assets/ball.png');
         game.load.image('paddle', 'assets/paddle.png');
 
-        game.load.audio('ballBounce', ['assets/blaster.mp3', 'assets/ballBounce.ogg']);
-        game.load.audio('ballHit', ['assets/blaster.mp3', 'assets/ballHit.ogg']);
-        game.load.audio('ballMissed', ['assets/blaster.mp3', 'assets/ballMissed.ogg']);
+        game.load.audio('ballBounce', ['assets/ballBounce.m4a', 'assets/ballBounce.ogg']);
+        game.load.audio('ballHit', ['assets/ballHit.m4a', 'assets/ballHit.ogg']);
+        game.load.audio('ballMissed', ['assets/ballMissed.m4a', 'assets/ballMissed.ogg']);
     },
     
     create: function () {
@@ -86,11 +86,11 @@ var playState = {
             
             if (this.ballSprite.body.blocked.up || this.ballSprite.body.blocked.down ) {
                 this.sndBallBounce.play();
-                Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, (-1*Math.round(this.ballSprite.body.angle * (180/Math.PI))), this.ballVelocity);
+                Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, (-1*Math.round(this.ballSprite.body.angle * (180/Math.PI))), this.ballVelocity, 'sndBallBounce');
             }
             if (this.ballSprite.body.blocked.left || this.ballSprite.body.blocked.right) {
                 this.sndBallBounce.play();
-                Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, (180 - Math.round(this.ballSprite.body.angle * (180/Math.PI))), this.ballVelocity);
+                Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, (180 - Math.round(this.ballSprite.body.angle * (180/Math.PI))), this.ballVelocity, 'sndBallBounce');
             }
         }
     },
@@ -190,7 +190,7 @@ var playState = {
             }
         
             game.physics.arcade.velocityFromAngle(randomAngle, gameProperties.ballVelocity, this.ballSprite.body.velocity);
-            Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, randomAngle, this.ballVelocity);
+            Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, randomAngle, this.ballVelocity, 'startBall');
 
         }
     },
@@ -240,13 +240,25 @@ var playState = {
         }
     },
 
-    ballStart: function(x,y,angle,velocity) {
+    ballStart: function(x,y,angle,velocity,hitType) {
         if(!this.master){
             this.ballSprite.position.x = x;
             this.ballSprite.position.y = y;
             game.physics.arcade.velocityFromAngle(angle, velocity, this.ballSprite.body.velocity);
+            switch(hitType) {
+                case 'sndBallHit':
+                    this.sndBallHit.play();
+                    break;
+                case 'sndBallBounce':
+                    this.sndBallBounce.play();
+                    break;
+                case 'sndBallNissed':
+                    this.sndBallMissed.play();
+                    break;
+                default:   
+            } 
         }
-            console.log("ball received", x, y, angle, velocity); 
+            console.log("ball received", x, y, angle, velocity,hitType); 
     },
     
     collideWithPaddle: function (ball, paddle) {
@@ -273,7 +285,7 @@ var playState = {
             game.physics.arcade.velocityFromAngle(returnAngle, this.ballVelocity, this.ballSprite.body.velocity);
         }
         
-        Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, returnAngle, this.ballVelocity);
+        Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, returnAngle, this.ballVelocity, 'sndBallHit');
         
         this.ballReturnCount ++;
         
@@ -286,6 +298,8 @@ var playState = {
     ballOutOfBounds: function () {
         this.sndBallMissed.play();
         
+        Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, (Math.round(this.ballSprite.body.angle * (180/Math.PI))), this.ballVelocity, 'sndBallMissed');        
+ 
         if (this.ballSprite.x < 0) {
             this.missedSide = 'left';
             this.scoreRight++;
