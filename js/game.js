@@ -84,9 +84,13 @@ var playState = {
         if (this.master) {
             game.physics.arcade.overlap(this.ballSprite, this.paddleGroup, this.collideWithPaddle, null, this);
             
-            if (this.ballSprite.body.blocked.up || this.ballSprite.body.blocked.down || this.ballSprite.body.blocked.left || this.ballSprite.body.blocked.right) {
+            if (this.ballSprite.body.blocked.up || this.ballSprite.body.blocked.down ) {
                 this.sndBallBounce.play();
                 Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, (-1*Math.round(this.ballSprite.body.angle * (180/Math.PI))), this.ballVelocity);
+            }
+            if (this.ballSprite.body.blocked.left || this.ballSprite.body.blocked.right) {
+                this.sndBallBounce.play();
+                Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, (Math.round(this.ballSprite.body.angle * (180/Math.PI))), this.ballVelocity);
             }
         }
     },
