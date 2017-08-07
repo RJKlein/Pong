@@ -86,7 +86,7 @@ var playState = {
             
             if (this.ballSprite.body.blocked.up || this.ballSprite.body.blocked.down || this.ballSprite.body.blocked.left || this.ballSprite.body.blocked.right) {
                 this.sndBallBounce.play();
-                Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, this.ballSprite.angle, this.ballSprite.body.velocity);
+                Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, this.ballSprite.angle, this.ballVelocity);
             }
         }
     },
@@ -240,7 +240,7 @@ var playState = {
         if(!this.master){
             this.ballSprite.position.x = x;
             this.ballSprite.position.y = y;
-            this.ballSprite.body.angularVelocity = velocity;
+            game.physics.arcade.velocityFromAngle(angle, velocity, this.ballSprite.body.velocity);
         }
             console.log("ball received", x, y, angle, velocity); 
     },
