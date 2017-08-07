@@ -87,6 +87,7 @@ var playState = {
             if (this.ballSprite.body.blocked.up || this.ballSprite.body.blocked.down || this.ballSprite.body.blocked.left || this.ballSprite.body.blocked.right) {
                 this.sndBallBounce.play();
                 Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, (this.ballSprite.body.angle * (180/Math.PI)), this.ballVelocity);
+                //comment
             }
         }
     },
