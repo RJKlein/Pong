@@ -18,8 +18,8 @@ Client.socket.on('newplayer',function(data){
     playState.addNewPlayer(data.id,data.x,data.y);
 });
 
-Client.sendNewBall = function(x,y){
-  Client.socket.emit('newBall',{x:x, y:y});
+Client.sendNewBall = function(x,y,angle,velocity){
+  Client.socket.emit('newBall',{x:x, y:y, angle:angle, velocity:velocity});
 };
 
 Client.socket.on('allplayers',function(data){

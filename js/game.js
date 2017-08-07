@@ -83,7 +83,6 @@ var playState = {
 
         if (this.master) {
             game.physics.arcade.overlap(this.ballSprite, this.paddleGroup, this.collideWithPaddle, null, this);
-            Client.sendNewBall(this.ballSprite.x, this.ballSprite.y);
             
             if (this.ballSprite.body.blocked.up || this.ballSprite.body.blocked.down || this.ballSprite.body.blocked.left || this.ballSprite.body.blocked.right) {
                 this.sndBallBounce.play();
@@ -92,7 +91,6 @@ var playState = {
     },
     
     initBall: function() {
-        game.physics.enable(this.ballSprite, Phaser.Physics.ARCADE);
         
         this.ballSprite.checkWorldBounds = true;
         this.ballSprite.body.collideWorldBounds = true;
@@ -135,6 +133,8 @@ var playState = {
     
     initPhysics: function () {
         game.physics.startSystem(Phaser.Physics.ARCADE);
+
+        game.physics.enable(this.ballSprite, Phaser.Physics.ARCADE);
 
         this.paddleGroup = game.add.group();
         this.paddleGroup.enableBody = true;
@@ -185,6 +185,8 @@ var playState = {
             }
         
             game.physics.arcade.velocityFromAngle(randomAngle, gameProperties.ballVelocity, this.ballSprite.body.velocity);
+            Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, randomAngle, this.ballSprite.body.velocity);
+
         }
     },
     
@@ -233,10 +235,11 @@ var playState = {
         }
     },
 
-    ballStart: function(x,y) {
+    ballStart: function(x,y,angle,velocity) {
         if(!this.master){
             this.ballSprite.position.x = x;
             this.ballSprite.position.y = y;
+            game.physics.arcade.velocityFromAngle(angle, velocity, this.ballSprite.body.velocity);
         }
             console.log("ball received", x, y); 
     },
@@ -264,6 +267,8 @@ var playState = {
             
             game.physics.arcade.velocityFromAngle(returnAngle, this.ballVelocity, this.ballSprite.body.velocity);
         }
+        
+        Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, returnAngle, this.ballSprite.body.velocity);
         
         this.ballReturnCount ++;
         
