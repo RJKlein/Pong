@@ -269,7 +269,7 @@ var playState = {
             game.physics.arcade.velocityFromAngle(returnAngle, this.ballVelocity, this.ballSprite.body.velocity);
         }
         
-        Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, returnAngle, this.ballSprite.body.velocity);
+        Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, returnAngle, this.ballVelocity);
         
         this.ballReturnCount ++;
         
