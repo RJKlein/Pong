@@ -240,7 +240,7 @@ var playState = {
         if(!this.master){
             this.ballSprite.position.x = x;
             this.ballSprite.position.y = y;
-            game.physics.arcade.velocityFromAngle(angle, velocity, this.ballSprite.body.velocity);
+            this.ballSprite.body.angularVelocity = velocity;
         }
             console.log("ball received", x, y, angle, velocity); 
     },
