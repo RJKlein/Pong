@@ -186,7 +186,7 @@ var playState = {
             }
         
             game.physics.arcade.velocityFromAngle(randomAngle, gameProperties.ballVelocity, this.ballSprite.body.velocity);
-            Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, randomAngle, this.ballSprite.body.velocity);
+            Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, randomAngle, this.ballVelocity);
 
         }
     },
