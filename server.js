@@ -47,6 +47,10 @@ io.on('connection',function(socket){
 
     socket.on('newBall',function(data){
         io.emit('ballStart',data);
+    });
+
+    socket.on('textUpdate',function(data){
+        io.emit('newText',data);
     });    
 });
 

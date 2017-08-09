@@ -32,7 +32,7 @@ var fontAssets = {
 };
 
 var labels = {
-    clickToStart: 'Left paddle: A to move up, Z to move down.\n\nRight paddle: UP and DOWN arrow keys.\n\n- click to start -',
+    clickToStart: 'To move paddle: Press and Swipe screen or mouse.\n\n- click to start -',
     winner: 'Winner!',
 };
 
@@ -163,6 +163,7 @@ var playState = {
         game.input.onDown.add(this.startGame, this);
         
         this.instructions.visible = true;
+        Client.textUpdate(this.instructions.visible, this.winnerLeft.visible, this.winnerRight.visible, this.tf_scoreLeft.text, this.tf_scoreRight.text);
     },
     
     startGame: function () {
@@ -330,12 +331,24 @@ var playState = {
     updateScoreTextFields: function () {
         this.tf_scoreLeft.text = this.scoreLeft;
         this.tf_scoreRight.text = this.scoreRight;
+        Client.textUpdate(this.instructions.visible, this.winnerLeft.visible, this.winnerRight.visible, this.tf_scoreLeft.text, this.tf_scoreRight.text);
     },
     
     hideTextFields: function () {
         this.instructions.visible = false;
         this.winnerLeft.visible = false;
         this.winnerRight.visible = false;
+        Client.textUpdate(this.instructions.visible, this.winnerLeft.visible, this.winnerRight.visible, this.tf_scoreLeft.text, this.tf_scoreRight.text);        
+    },
+
+    newText: function(instructions, winnerLeft, winnerRight, scoreLeft, scoreRight) {
+        if(!this.master){
+            this.instructions.visible = instructions;
+            this.winnerLeft.visible = winnerLeft;
+            this.winnerRight.visible = winnerRight;
+            this.tf_scoreLeft.text = scoreLeft;
+            this.tf_scoreRight.text = scoreRight;        
+        }
     },
     
     removePlayer: function(id){
