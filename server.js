@@ -37,6 +37,9 @@ io.on('connection',function(socket){
         });
 
         socket.on('disconnect',function(){
+            if(socket.player.id=server.master){
+                server.master = server.lastPlayderID;
+            } 
             io.emit('remove',socket.player.id);
         });
     });
