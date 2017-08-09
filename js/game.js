@@ -133,7 +133,7 @@ var playState = {
         this.winnerRight = game.add.text(gameProperties.screenWidth * 0.75, gameProperties.screenHeight * 0.25, labels.winner, fontAssets.instructionsFontStyle);
         this.winnerRight.anchor.set(0.5, 0.5);
         
-        //this.hideTextFields();
+        this.hideTextFields();
     },
     
     initPhysics: function () {

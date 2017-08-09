@@ -22,7 +22,7 @@ Client.sendNewBall = function(x,y,angle,velocity, hitType){
   Client.socket.emit('newBall',{x:x, y:y, angle:angle, velocity:velocity, hitType:hitType});
 };
 
-Client.textUpdate(instructions, winnerLeft, winnerRight, scoreLeft, scoreRight){
+Client.textUpdate = function(instructions, winnerLeft, winnerRight, scoreLeft, scoreRight){
   Client.socket.emit('textUpdate',{instructions:instructions, winnerLeft:winnerLeft, winnerRight:winnerRight, scoreLeft:scoreLeft, scoreRight:scoreRight});
 };
 
@@ -41,7 +41,8 @@ Client.socket.on('allplayers',function(data){
 
     Client.socket.on('newText',function(data){
         playState.newText(data.instructions,data.winnerLeft,data.winnerRight,data.scoreLeft,data.scoreRight);
-    });    
+    });   
+    
     Client.socket.on('remove',function(id){
         playState.removePlayer(id);
     });
