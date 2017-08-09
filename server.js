@@ -38,7 +38,10 @@ io.on('connection',function(socket){
 
         socket.on('disconnect',function(){
             console.log('disconnect on '+server.master+'=?'+socket.player.id);
-            if(socket.player.id = server.master) server.master = server.lastPlayderID;
+            if (socket.player.id = server.master) {
+                    server.master = server.lastPlayderID;
+                    console.log('missed me not'+server.master+'=?'+server.lastPlayderID);
+            }; 
             io.emit('remove',socket.player.id);
             console.log('disconnect on '+server.master+'=?'+server.lastPlayderID);
         });
