@@ -216,15 +216,16 @@ var playState = {
         game.physics.arcade.checkCollision.right = enabled;
     },
     
-    addNewPlayer: function(id,master,y){
+    addNewPlayer: function(id,master,y,color){
         if (id&1){
             this.paddle[id] = game.add.sprite(gameProperties.paddleLeft_x, y, 'paddle');
         } else {
             this.paddle[id] = game.add.sprite(gameProperties.paddleRight_x, y, 'paddle');
         }
         this.paddle[id].anchor.set(0.5, 0.5);
+        this.paddle[id].tint = color;
         this.paddleGroup.add(this.paddle[id]);
-        console.log("test received", id, master, y);
+        console.log("test received", id, master, y, color);
         if (id === master){
             this.master = true;
             // immediately send x coordinate to clear master flag

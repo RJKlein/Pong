@@ -25,6 +25,7 @@ io.on('connection',function(socket){
             id: server.lastPlayderID++,
             x: server.master,
             y: randomInt(100,400)
+            color: randomInt(10000000,16777215)
         };
         socket.emit('allplayers',getAllPlayers());
         socket.broadcast.emit('newplayer',socket.player);

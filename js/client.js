@@ -15,7 +15,7 @@ Client.sendClick = function(x,y){
 };
 
 Client.socket.on('newplayer',function(data){
-    playState.addNewPlayer(data.id,data.x,data.y);
+    playState.addNewPlayer(data.id,data.x,data.y,data.color);
 });
 
 Client.sendNewBall = function(x,y,angle,velocity, hitType){
@@ -28,7 +28,7 @@ Client.textUpdate = function(instructions, winnerLeft, winnerRight, scoreLeft, s
 
 Client.socket.on('allplayers',function(data){
     for(var i = 0; i < data.length; i++){
-        playState.addNewPlayer(data[i].id,data[i].x,data[i].y);
+        playState.addNewPlayer(data[i].id,data[i].x,data[i].y,data[i].color);
     }
 
     Client.socket.on('move',function(data){
