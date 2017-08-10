@@ -1,4 +1,5 @@
 var gameProperties = {
+    // list of constants used throught the game
     screenWidth: 640,
     screenHeight: 480,
     
@@ -23,6 +24,7 @@ var gameProperties = {
 };
 
 var fontAssets = {
+    // font definitions for all game text
     scoreLeft_x: gameProperties.screenWidth * 0.25,
     scoreRight_x: gameProperties.screenWidth * 0.75,
     scoreTop_y: 10,
@@ -32,11 +34,13 @@ var fontAssets = {
 };
 
 var labels = {
+    // all game text 
     clickToStart: 'To move paddle: Press and Swipe screen or mouse.\n\n- click to start -',
     winner: 'Winner!',
 };
 
 var mainState = function(game) {
+    // all game objects 
     this.backgroundGraphics;
     this.ballSprite;
     this.paddleGroup;
@@ -86,10 +90,12 @@ var playState = {
             
             if (this.ballSprite.body.blocked.up || this.ballSprite.body.blocked.down ) {
                 this.sndBallBounce.play();
+                // on all collision events send new ball vector to all clients for cieling bounce the angle of reflection is inverted by * -1 also radian needs to convert to degrees
                 Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, (-1*Math.round(this.ballSprite.body.angle * (180/Math.PI))), this.ballVelocity, 'sndBallBounce');
             }
             if (this.ballSprite.body.blocked.left || this.ballSprite.body.blocked.right) {
                 this.sndBallBounce.play();
+                // on all collision events send new ball vector to all clients for wall bounce the angle of reflection is inverted by subtracting 180-angle also radian needs to convert to degrees
                 Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, (180 - Math.round(this.ballSprite.body.angle * (180/Math.PI))), this.ballVelocity, 'sndBallBounce');
             }
         }
@@ -157,12 +163,12 @@ var playState = {
     },
     
     startDemo: function () {
-        //this.ballSprite.visible = false;
         this.resetBall();
         this.enableBoundaries(true);       
         game.input.onDown.add(this.startGame, this);
         
         this.instructions.visible = true;
+        // send all text visibility tags and score to clients
         Client.textUpdate(this.instructions.visible, this.winnerLeft.visible, this.winnerRight.visible, this.tf_scoreLeft.text, this.tf_scoreRight.text);
     },
     
@@ -176,6 +182,7 @@ var playState = {
     },
     
     startBall: function () {
+        // only create a ball if you are the master of clients
         if (this.master){
             this.ballSprite.reset(game.world.centerX, game.rnd.between(0, gameProperties.screenHeight));
             this.ballVelocity = gameProperties.ballVelocity;
@@ -189,16 +196,13 @@ var playState = {
             } else if (this.missedSide == 'left') {
                 randomAngle = game.rnd.pick(gameProperties.ballRandomStartingAngleLeft);
             }
-        
             game.physics.arcade.velocityFromAngle(randomAngle, gameProperties.ballVelocity, this.ballSprite.body.velocity);
             Client.sendNewBall(this.ballSprite.x, this.ballSprite.y, randomAngle, this.ballVelocity, 'startBall');
-
         }
     },
     
     resetBall: function () {
         this.ballSprite.reset(game.world.centerX, game.rnd.between(0, gameProperties.screenHeight));
-        //this.ballSprite.visible = false;
         game.time.events.add(Phaser.Timer.SECOND * gameProperties.ballStartDelay, this.startBall, this);
     },
     
@@ -235,13 +239,15 @@ var playState = {
     },
     
     getInput: function () {
+        // if mouse or touch is down send paddle coordinates and input coordinates.
         if (game.input.activePointer.isDown)
         {
             Client.sendClick(gameProperties.paddleRight_x, game.input.y);
         }
     },
 
-    ballStart: function(x,y,angle,velocity,hitType) {
+    ballEvent: function(x,y,angle,velocity,hitType) {
+        // ball event for any start, or bounce 
         if(!this.master){
             this.ballSprite.position.x = x;
             this.ballSprite.position.y = y;
@@ -253,7 +259,7 @@ var playState = {
                 case 'sndBallBounce':
                     this.sndBallBounce.play();
                     break;
-                case 'sndBallNissed':
+                case 'sndBallMissed':
                     this.sndBallMissed.play();
                     break;
                 default:   
@@ -356,7 +362,7 @@ var playState = {
         delete this.paddle[id];
     },
 };
-
+// initalize phaser game and set start function
 var game = new Phaser.Game(gameProperties.screenWidth, gameProperties.screenHeight, Phaser.AUTO, 'gameDiv');
 game.state.add('main', playState);
 game.state.start('main');

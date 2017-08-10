@@ -35,8 +35,8 @@ Client.socket.on('allplayers',function(data){
         playState.movePlayer(data.id,data.x,data.y);
     });
     
-    Client.socket.on('ballStart',function(data){
-        playState.ballStart(data.x,data.y,data.angle,data.velocity,data.hitType);
+    Client.socket.on('ballEvent',function(data){
+        playState.ballEvent(data.x,data.y,data.angle,data.velocity,data.hitType);
     });
 
     Client.socket.on('newText',function(data){
